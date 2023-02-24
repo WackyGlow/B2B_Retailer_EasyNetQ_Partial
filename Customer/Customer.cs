@@ -37,10 +37,11 @@ namespace Customer
             {
                 // Listen to reply messages from the Retailer (use Topic Based Routing).
                 // WRITE CODE HERE!
-
+                bus.PubSub.Subscribe<OrderReplyMessage>("customer" + customerID,
+                    HandleOrderEvent, x => x.WithTopic(customerID.ToString()));
                 // Send an order request message to the Retailer (use a point-to-point channel).
                 // WRITE CODE HERE!
-
+                bus.SendReceive.Send("customerToRetailerQueue",request);
                 // Block this thread so that the customer instance will not exit.
                 Console.ReadLine();
             }
